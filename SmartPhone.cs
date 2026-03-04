@@ -14,13 +14,12 @@ namespace SharpPhone
         public double price;
         public int stock;
 
-        // Internal list (can be modified only inside this class)
         private static List<SmartPhone> phoneList = new List<SmartPhone>();
-
-        // Public read-only access
         public static IReadOnlyList<SmartPhone> PhoneList => phoneList;
 
-        public SmartPhone(string Brand, string Model, int Size, double Price, int Stock)
+        public SmartPhone() { }
+
+        public SmartPhone(string Brand, string Model, int Size, double Price, int Stock, bool Save)
         {
             id = phoneList.Count + 1;
             brand = Brand;
@@ -30,25 +29,70 @@ namespace SharpPhone
             stock = Stock;
 
             AddPhone(this);
-            string jsonString = JsonSerializer.Serialize(this, new JsonSerializerOptions
-            {
-                WriteIndented = true, 
-                IncludeFields = true
-            });
 
-            File.WriteAllText("C:\\Users\\ryanl\\source\\repos\\SharpPhone\\phones.json", jsonString);
-            Console.WriteLine(File.ReadAllText("C:\\Users\\ryanl\\source\\repos\\SharpPhone\\phones.json"));
+            if (Save)
+            {
+                string jsonString = JsonSerializer.Serialize(this, new JsonSerializerOptions
+                {
+                    WriteIndented = false,
+                    IncludeFields = true
+                });
+
+                string formatted = $"{id} = {jsonString}\n";
+                File.AppendAllText("C:\\Users\\ryanl\\source\\repos\\SharpPhone\\phones.json", formatted);
+            }
         }
 
-        // Method to safely add a phone to the list
         public static void AddPhone(SmartPhone phone)
         {
             phoneList.Add(phone);
         }
+
         public static IReadOnlyList<SmartPhone> GetList()
         {
             return phoneList;
         }
 
+        public static void LoadFromFile(string path)
+        {
+            if (!File.Exists(path))
+                return;
+
+            string[] lines = File.ReadAllLines(path);
+            phoneList.Clear();
+
+            foreach (string rawLine in lines)
+            {
+                string line = rawLine.Trim();
+                if (string.IsNullOrWhiteSpace(line))
+                    continue;
+
+                int equalsIndex = line.IndexOf('=');
+                if (equalsIndex == -1)
+                    continue;
+
+                string jsonPart = line.Substring(equalsIndex + 1).Trim();
+
+                try
+                {
+                    SmartPhone? phone = JsonSerializer.Deserialize<SmartPhone>(jsonPart, new JsonSerializerOptions
+                    {
+                        IncludeFields = true
+                    });
+
+                    if (phone != null)
+                        phoneList.Add(phone);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        $"Error reading phone entry:\n{line}\n\n{ex.Message}",
+                        "JSON Parse Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error
+                    );
+                }
+            }
+        }
     }
 }

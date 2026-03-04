@@ -26,7 +26,7 @@ namespace SharpPhone
                 int size = int.Parse(txtSize.Text);
                 double price = double.Parse(txtPrice.Text); 
                 int stock = int.Parse(txtStock.Text);
-                SmartPhone newPhone = new SmartPhone(Brand: brand, Model: model, Size: size, Price: price, Stock: stock);
+                SmartPhone newPhone = new SmartPhone(Brand: brand, Model: model, Size: size, Price: price, Stock: stock, Save: true);
                 DialogResult = DialogResult.OK;
                 Close();
             }

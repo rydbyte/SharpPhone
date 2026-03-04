@@ -1,10 +1,22 @@
+using System.ComponentModel.Design.Serialization;
+using System.Text.Json;
+
 namespace SharpPhone
 {
     public partial class MainPage : Form
     {
+
         public MainPage()
         {
             InitializeComponent();
+
+            SmartPhone.LoadFromFile("C:\\Users\\ryanl\\source\\repos\\SharpPhone\\phones.json");
+
+            listPhones.Items.Clear();
+            foreach (var phone in SmartPhone.PhoneList)
+            {
+                listPhones.Items.Add($"{phone.brand}, Model: {phone.model}");
+            }
         }
 
         private void btnAddphone_Click(object sender, EventArgs e)
