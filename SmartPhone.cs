@@ -6,14 +6,14 @@ using System.Text.Json;
 
 namespace SharpPhone
 {
-    class SmartPhone
+    public class SmartPhone
     {
-        public int id;
-        public string brand;
-        public string model;
-        public int size;
-        public double price;
-        public int stock;
+        public int id { get; set; }
+        public string brand { get; set; }
+        public string model { get; set; }
+        public int size { get; set; }
+        public double price { get; set; }
+        public int stock { get; set; }
 
         private static List<SmartPhone> phoneList = new List<SmartPhone>();
         public static IReadOnlyList<SmartPhone> PhoneList => phoneList;
@@ -22,12 +22,12 @@ namespace SharpPhone
 
         public SmartPhone(string Brand, string Model, int Size, double Price, int Stock, bool Save)
         {
-            id = phoneList.Count + 1;
-            brand = Brand;
-            model = Model;
-            size = Size;
-            price = Price;
-            stock = Stock;
+            this.id = phoneList.Count + 1;
+            this.brand = Brand;
+            this.model = Model;
+            this.size = Size;
+            this.price = Price;
+            this.stock = Stock;
 
             AddPhone(this);
 
