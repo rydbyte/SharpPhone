@@ -54,7 +54,7 @@ namespace SharpPhone
             phoneList.RemoveAll(p => p.id == id);
             using (StreamWriter writer = new StreamWriter("C:\\Users\\ryanl\\source\\repos\\SharpPhone\\phones.json", false))
             {
-                foreach (var phone in phoneList)
+                foreach (SmartPhone phone in phoneList)
                 {
                     string jsonString = JsonSerializer.Serialize(phone, new JsonSerializerOptions
                     {
@@ -75,7 +75,7 @@ namespace SharpPhone
             phoneList[id].stock = int.Parse(stock.Text);
             using (StreamWriter writer = new StreamWriter("C:\\Users\\ryanl\\source\\repos\\SharpPhone\\phones.json", false))
             {
-                foreach (var phone in phoneList)
+                foreach (SmartPhone phone in phoneList)
                 {
                     string jsonString = JsonSerializer.Serialize(phone, new JsonSerializerOptions
                     {

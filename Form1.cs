@@ -13,7 +13,7 @@ namespace SharpPhone
             SmartPhone.LoadFromFile("C:\\Users\\ryanl\\source\\repos\\SharpPhone\\phones.json");
 
             listPhones.Items.Clear();
-            foreach (var phone in SmartPhone.PhoneList)
+            foreach (SmartPhone phone in SmartPhone.PhoneList)
             {
                 listPhones.Items.Add($"{phone.brand}, Model: {phone.model}, Stock: {phone.stock}");
             }
@@ -26,7 +26,7 @@ namespace SharpPhone
             if (Page.DialogResult == DialogResult.OK)
             {
                 listPhones.Items.Clear();
-                foreach (var phone in SmartPhone.PhoneList)
+                foreach (SmartPhone phone in SmartPhone.PhoneList)
                 {
                     listPhones.Items.Add($"{phone.brand}, Model: {phone.model}, Stock: {phone.stock}");
                 }
@@ -58,7 +58,7 @@ namespace SharpPhone
             if (Page.DialogResult == DialogResult.OK)
             {
                 listPhones.Items.Clear();
-                foreach (var phone in SmartPhone.PhoneList)
+                foreach (SmartPhone phone in SmartPhone.PhoneList)
                 {
                     listPhones.Items.Add($"{phone.brand}, Model: {phone.model}, Stock: {phone.stock}");
                 }
@@ -80,9 +80,9 @@ namespace SharpPhone
             SmartPhone.DeletePhone(idToDelete);
 
             listPhones.Items.Clear();
-            foreach (var phone in SmartPhone.PhoneList)
+            foreach (SmartPhone phone in SmartPhone.PhoneList)
             {
-                listPhones.Items.Add($"{phone.brand}, Model: {phone.model}, {phone.stock}");
+                listPhones.Items.Add($"{phone.brand}, Model: {phone.model}, Stock: {phone.stock}");
             }
         }
     }
