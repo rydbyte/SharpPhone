@@ -65,7 +65,6 @@ namespace SharpPhone
                     writer.WriteLine($"{phone.id} = {jsonString}");
                 }
             }
-
         }
         public static void ModifyPhone(int id, TextBox brand, TextBox model, TextBox size, TextBox price, TextBox stock)
         {
@@ -87,7 +86,6 @@ namespace SharpPhone
                     writer.WriteLine($"{phone.id} = {jsonString}");
                 }
             }
-
         }
 
         public static IReadOnlyList<SmartPhone> GetList()

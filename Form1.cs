@@ -31,7 +31,6 @@ namespace SharpPhone
                     listPhones.Items.Add($"{phone.brand}, Model: {phone.model}, Stock: {phone.stock}");
                 }
             }
-
         }
 
         private void listPhones_SelectedIndexChanged(object sender, EventArgs e)
@@ -86,6 +85,5 @@ namespace SharpPhone
                 listPhones.Items.Add($"{phone.brand}, Model: {phone.model}, {phone.stock}");
             }
         }
-
     }
 }

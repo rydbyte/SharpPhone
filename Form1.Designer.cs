@@ -67,9 +67,12 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(12, 9);
+            label2.BackColor = SystemColors.ControlLightLight;
+            label2.BorderStyle = BorderStyle.FixedSingle;
+            label2.FlatStyle = FlatStyle.Popup;
+            label2.Location = new Point(12, 26);
             label2.Name = "label2";
-            label2.Size = new Size(96, 20);
+            label2.Size = new Size(98, 22);
             label2.TabIndex = 4;
             label2.Text = "Smartphones";
             // 
