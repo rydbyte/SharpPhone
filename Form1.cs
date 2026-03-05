@@ -15,7 +15,7 @@ namespace SharpPhone
             listPhones.Items.Clear();
             foreach (var phone in SmartPhone.PhoneList)
             {
-                listPhones.Items.Add($"{phone.brand}, Model: {phone.model}");
+                listPhones.Items.Add($"{phone.brand}, Model: {phone.model}, Stock: {phone.stock}");
             }
         }
 
@@ -28,7 +28,7 @@ namespace SharpPhone
                 listPhones.Items.Clear();
                 foreach (var phone in SmartPhone.PhoneList)
                 {
-                    listPhones.Items.Add($"{phone.brand}, Model: {phone.model}");
+                    listPhones.Items.Add($"{phone.brand}, Model: {phone.model}, Stock: {phone.stock}");
                 }
             }
 
@@ -61,7 +61,7 @@ namespace SharpPhone
                 listPhones.Items.Clear();
                 foreach (var phone in SmartPhone.PhoneList)
                 {
-                    listPhones.Items.Add($"{phone.brand}, Model: {phone.model}, {phone.stock}");
+                    listPhones.Items.Add($"{phone.brand}, Model: {phone.model}, Stock: {phone.stock}");
                 }
             }
         }

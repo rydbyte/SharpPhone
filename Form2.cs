@@ -32,7 +32,7 @@ namespace SharpPhone
             }
             catch (FormatException)
             {
-                MessageBox.Show("Please enter valid values for Size and Price.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Please enter valid values for Size, Price and Stock.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
            

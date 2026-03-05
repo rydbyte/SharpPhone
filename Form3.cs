@@ -28,11 +28,7 @@ namespace SharpPhone
         {
             try
             {
-                SmartPhone.PhoneList[iindex].brand = txtbrand.Text;
-                SmartPhone.PhoneList[iindex].model = txtModel.Text;
-                SmartPhone.PhoneList[iindex].size = int.Parse(txtSize.Text);
-                SmartPhone.PhoneList[iindex].price = double.Parse(txtPrice.Text);
-                SmartPhone.PhoneList[iindex].stock = int.Parse(txtStock.Text);
+                SmartPhone.ModifyPhone(iindex, txtbrand, txtModel, txtSize, txtPrice, txtStock);
                 DialogResult = DialogResult.OK;
                 Close();
             }
