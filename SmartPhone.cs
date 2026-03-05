@@ -48,6 +48,25 @@ namespace SharpPhone
             phoneList.Add(phone);
         }
 
+        public static void DeletePhone(int id)
+        {
+            phoneList.RemoveAll(p => p.id == id);
+            using (StreamWriter writer = new StreamWriter("C:\\Users\\ryanl\\source\\repos\\SharpPhone\\phones.json", false))
+            {
+                foreach (var phone in phoneList)
+                {
+                    string jsonString = JsonSerializer.Serialize(phone, new JsonSerializerOptions
+                    {
+                        WriteIndented = false,
+                        IncludeFields = true
+                    });
+
+                    writer.WriteLine($"{phone.id} = {jsonString}");
+                }
+            }
+
+        }
+
         public static IReadOnlyList<SmartPhone> GetList()
         {
             return phoneList;

@@ -32,6 +32,7 @@
             btnAddphone = new Button();
             btnModify = new Button();
             label2 = new Label();
+            btnDelete = new Button();
             SuspendLayout();
             // 
             // listPhones
@@ -72,12 +73,23 @@
             label2.TabIndex = 4;
             label2.Text = "Smartphones";
             // 
+            // btnDelete
+            // 
+            btnDelete.Location = new Point(254, 119);
+            btnDelete.Name = "btnDelete";
+            btnDelete.Size = new Size(94, 29);
+            btnDelete.TabIndex = 5;
+            btnDelete.Text = "Delete";
+            btnDelete.UseVisualStyleBackColor = true;
+            btnDelete.Click += btnDelete_Click;
+            // 
             // MainPage
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLightLight;
             ClientSize = new Size(1062, 673);
+            Controls.Add(btnDelete);
             Controls.Add(label2);
             Controls.Add(btnModify);
             Controls.Add(btnAddphone);
@@ -93,5 +105,6 @@
         private Button btnAddphone;
         private Button btnModify;
         private Label label2;
+        private Button btnDelete;
     }
 }

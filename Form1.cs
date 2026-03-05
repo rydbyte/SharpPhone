@@ -48,11 +48,11 @@ namespace SharpPhone
                 return;
             }
             ModifyPhonePage Page = new ModifyPhonePage(
-                index: index, 
-                brand: SmartPhone.PhoneList[index].brand, 
-                model: SmartPhone.PhoneList[index].model, 
-                size: SmartPhone.PhoneList[index].size, 
-                price: SmartPhone.PhoneList[index].price, 
+                index: index,
+                brand: SmartPhone.PhoneList[index].brand,
+                model: SmartPhone.PhoneList[index].model,
+                size: SmartPhone.PhoneList[index].size,
+                price: SmartPhone.PhoneList[index].price,
                 stock: SmartPhone.PhoneList[index].stock
                 );
             Page.ShowDialog();
@@ -65,5 +65,27 @@ namespace SharpPhone
                 }
             }
         }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            int index = listPhones.SelectedIndex;
+
+            if (index < 0)
+            {
+                MessageBox.Show("Please select a phone to delete.");
+                return;
+            }
+
+            int idToDelete = SmartPhone.PhoneList[index].id;
+
+            SmartPhone.DeletePhone(idToDelete);
+
+            listPhones.Items.Clear();
+            foreach (var phone in SmartPhone.PhoneList)
+            {
+                listPhones.Items.Add($"{phone.brand}, Model: {phone.model}, {phone.stock}");
+            }
+        }
+
     }
 }
