@@ -42,6 +42,10 @@ namespace SharpPhone
             this.password = password;
             this.failedAttempts = failedAttempts;
             this.locked = locked;
+
+            SharpPhoneDataBase.userAccounts.Add(this);
+
+            JsonStore.Save();
         }
 
     }
