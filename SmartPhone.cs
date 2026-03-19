@@ -15,105 +15,96 @@ namespace SharpPhone
         public double price { get; set; }
         public int stock { get; set; }
 
-        private static List<SmartPhone> phoneList = new List<SmartPhone>();
-        public static IReadOnlyList<SmartPhone> PhoneList => phoneList;
-
-        public SmartPhone(){}
-
-        public SmartPhone(string Brand, string Model, int Size, double Price, int Stock, bool Save)
+        public SmartPhone(string Brand, string Model, int Size, double Price, int Stock)
         {
-            this.id = phoneList.Count;
+            this.id = SharpPhoneDataBase.phoneList.Count;
             this.brand = Brand;
             this.model = Model;
             this.size = Size;
             this.price = Price;
             this.stock = Stock;
 
-            AddPhone(this);
+            SharpPhoneDataBase.phoneList.Add(this);
 
-            if (Save)
+            JsonStore.Save();
+        }
+    }
+
+    public class UserAccount
+    {
+        public string username { get; set; } = "";
+        public string password { get; set; } = "";
+        public int failedAttempts { get; set; } = 0;
+        public bool locked { get; set; } = false;
+        public UserAccount(string username, string password, int failedAttempts, bool locked) 
+        { 
+            this.username = username;
+            this.password = password;
+            this.failedAttempts = failedAttempts;
+            this.locked = locked;
+        }
+
+    }
+
+    public class JsonStore
+    {
+        public static void Load()
+        {
+            var path = @"C:\Users\ryanl\source\repos\SharpPhone\phones.json";
+            if (!File.Exists(path)) return;
+
+            var json = File.ReadAllText(path);
+            using var doc = JsonDocument.Parse(json);
+            var root = doc.RootElement;
+
+            if (root.TryGetProperty("phones", out var phones))
             {
-                string jsonString = JsonSerializer.Serialize(this, new JsonSerializerOptions
-                {
-                    WriteIndented = false,
-                    IncludeFields = true
-                });
+                var phonesList = JsonSerializer.Deserialize<List<SmartPhone>>(phones.GetRawText());
+                SharpPhoneDataBase.phoneList = phonesList ?? new List<SmartPhone>();
+            }
 
-                File.AppendAllText("C:\\Users\\ryanl\\source\\repos\\SharpPhone\\phones.json", jsonString);
+            if (root.TryGetProperty("users", out var users))
+            {
+                var usersList = JsonSerializer.Deserialize<List<UserAccount>>(users.GetRawText());
+                SharpPhoneDataBase.userAccounts = usersList ?? new List<UserAccount>();
             }
         }
 
-        public static void AddPhone(SmartPhone phone)
+        public static void Save()
         {
-            phoneList.Add(phone);
-        }
-
-        public static void DeletePhone(int id)
-        {
-            phoneList.RemoveAll(p => p.id == id);
-            using (StreamWriter writer = new StreamWriter("C:\\Users\\ryanl\\source\\repos\\SharpPhone\\phones.json", false))
+            var data = new
             {
-                foreach (SmartPhone phone in phoneList)
-                {
-                    string jsonString = JsonSerializer.Serialize(phone, new JsonSerializerOptions
-                    {
-                        WriteIndented = false,
-                        IncludeFields = true
-                    });
+                phones = SharpPhoneDataBase.phoneList,
+                users = SharpPhoneDataBase.userAccounts
+            };
 
-                    writer.WriteLine(jsonString);
-                }
-            }
-        }
-        public static void ModifyPhone(int id, TextBox brand, TextBox model, TextBox size, TextBox price, TextBox stock)
-        {
-            phoneList[id].brand = brand.Text;
-            phoneList[id].model = model.Text;
-            phoneList[id].size = int.Parse(size.Text);
-            phoneList[id].price = double.Parse(price.Text);
-            phoneList[id].stock = int.Parse(stock.Text);
-            using (StreamWriter writer = new StreamWriter("C:\\Users\\ryanl\\source\\repos\\SharpPhone\\phones.json", false))
+            var json = JsonSerializer.Serialize(data, new JsonSerializerOptions
             {
-                foreach (SmartPhone phone in phoneList)
-                {
-                    string jsonString = JsonSerializer.Serialize(phone, new JsonSerializerOptions
-                    {
-                        WriteIndented = false,
-                        IncludeFields = true
-                    });
+                WriteIndented = true
+            });
 
-                    writer.WriteLine(jsonString);
-                }
-            }
+            File.WriteAllText("C:\\Users\\ryanl\\source\\repos\\SharpPhone\\phones.json", json);
         }
 
-        public static void LoadFromFile(string path)
+        public static void Delete(int id)
         {
-
-            string[] lines = File.ReadAllLines(path);
-
-            foreach (string rawLine in lines)
-            {
-                try
-                {
-                    SmartPhone? phone = JsonSerializer.Deserialize<SmartPhone>(rawLine, new JsonSerializerOptions
-                    {
-                        IncludeFields = true
-                    });
-
-                    if (phone != null)
-                        phoneList.Add(phone);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(
-                        $"Error:\n{ex.Message}",
-                        "JSON Parse Error",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error
-                    );
-                }
-            }
+            SharpPhoneDataBase.phoneList.RemoveAll(p => p.id == id);
+            Save();
         }
+        public static void Modify(int id, TextBox brand, TextBox model, TextBox size, TextBox price, TextBox stock)
+        {
+            SharpPhoneDataBase.phoneList[id].brand = brand.Text;
+            SharpPhoneDataBase.phoneList[id].model = model.Text;
+            SharpPhoneDataBase.phoneList[id].size = int.Parse(size.Text);
+            SharpPhoneDataBase.phoneList[id].price = double.Parse(price.Text);
+            SharpPhoneDataBase.phoneList[id].stock = int.Parse(stock.Text);
+            Save();
+        }
+    }
+
+    public class SharpPhoneDataBase
+    {
+        public static List<SmartPhone> phoneList = new List<SmartPhone>();
+        public static List<UserAccount> userAccounts = new List<UserAccount>();
     }
 }

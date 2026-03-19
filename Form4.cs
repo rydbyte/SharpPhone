@@ -16,26 +16,49 @@ namespace SharpPhone
         public Start()
         {
             InitializeComponent();
+            JsonStore.Load();
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            if (txtUser.Text == "E" && txtPass.Text == "E" && wrongs != 3)
+            var username = txtUser.Text ?? string.Empty;
+            var password = txtPass.Text ?? string.Empty;
+
+            var user = SharpPhoneDataBase.userAccounts.FirstOrDefault(u => u.username.Equals(username, StringComparison.OrdinalIgnoreCase));
+
+            if (user == null)
+            {  
+                MessageBox.Show("No user", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (user.locked)
             {
+                MessageBox.Show("This account is locked due to too many failed login attempts.", "Account Locked", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (user.password == password)
+            {
+                user.failedAttempts = 0;
+                JsonStore.Save();
+
                 MainPage mainPage = new MainPage();
                 mainPage.Show();
                 Close();
+                return;
+            }
 
-            }
-            else if (wrongs < 3)
+            user.failedAttempts++;
+            if (user.failedAttempts >= 3)
             {
-                MessageBox.Show("Wrong Password or User", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                wrongs++;
+                user.locked = true;
             }
-            else 
-            {
-                System.Windows.Forms.Application.Exit();
-            }
+            JsonStore.Save();
+
+            MessageBox.Show("Wrong Username or Password", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+ 
+            if (user.failedAttempts >= 3) System.Windows.Forms.Application.Exit();
         }
     }
 }

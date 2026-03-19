@@ -28,7 +28,7 @@ namespace SharpPhone
         {
             try
             {
-                SmartPhone.ModifyPhone(iindex, txtbrand, txtModel, txtSize, txtPrice, txtStock);
+                JsonStore.Modify(iindex, txtbrand, txtModel, txtSize, txtPrice, txtStock);
                 DialogResult = DialogResult.OK;
                 Close();
             }

@@ -10,10 +10,7 @@ namespace SharpPhone
         {
             InitializeComponent();
 
-            SmartPhone.LoadFromFile("C:\\Users\\ryanl\\source\\repos\\SharpPhone\\phones.json");
-
-            listPhones.Items.Clear();
-            foreach (SmartPhone phone in SmartPhone.PhoneList)
+            foreach (SmartPhone phone in SharpPhoneDataBase.phoneList)
             {
                 listPhones.Items.Add($"{phone.brand}, Model: {phone.model}, Stock: {phone.stock}");
             }
@@ -26,7 +23,7 @@ namespace SharpPhone
             if (Page.DialogResult == DialogResult.OK)
             {
                 listPhones.Items.Clear();
-                foreach (SmartPhone phone in SmartPhone.PhoneList)
+                foreach (SmartPhone phone in SharpPhoneDataBase.phoneList)
                 {
                     listPhones.Items.Add($"{phone.brand}, Model: {phone.model}, Stock: {phone.stock}");
                 }
@@ -48,17 +45,17 @@ namespace SharpPhone
             }
             ModifyPhonePage Page = new ModifyPhonePage(
                 index: index,
-                brand: SmartPhone.PhoneList[index].brand,
-                model: SmartPhone.PhoneList[index].model,
-                size: SmartPhone.PhoneList[index].size,
-                price: SmartPhone.PhoneList[index].price,
-                stock: SmartPhone.PhoneList[index].stock
+                brand: SharpPhoneDataBase.phoneList[index].brand,
+                model: SharpPhoneDataBase.phoneList[index].model,
+                size:  SharpPhoneDataBase.phoneList[index].size,
+                price: SharpPhoneDataBase.phoneList[index].price,
+                stock: SharpPhoneDataBase.phoneList[index].stock
                 );
             Page.ShowDialog();
             if (Page.DialogResult == DialogResult.OK)
             {
                 listPhones.Items.Clear();
-                foreach (SmartPhone phone in SmartPhone.PhoneList)
+                foreach (SmartPhone phone in SharpPhoneDataBase.phoneList)
                 {
                     listPhones.Items.Add($"{phone.brand}, Model: {phone.model}, Stock: {phone.stock}");
                 }
@@ -75,12 +72,12 @@ namespace SharpPhone
                 return;
             }
 
-            int idToDelete = SmartPhone.PhoneList[index].id;
+            int idToDelete = SharpPhoneDataBase.phoneList[index].id;
 
-            SmartPhone.DeletePhone(idToDelete);
+            JsonStore.Delete(idToDelete);
 
             listPhones.Items.Clear();
-            foreach (SmartPhone phone in SmartPhone.PhoneList)
+            foreach (SmartPhone phone in SharpPhoneDataBase.phoneList)
             {
                 listPhones.Items.Add($"{phone.brand}, Model: {phone.model}, Stock: {phone.stock}");
             }
