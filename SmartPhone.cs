@@ -18,11 +18,11 @@ namespace SharpPhone
         private static List<SmartPhone> phoneList = new List<SmartPhone>();
         public static IReadOnlyList<SmartPhone> PhoneList => phoneList;
 
-        public SmartPhone() { }
+        public SmartPhone(){}
 
         public SmartPhone(string Brand, string Model, int Size, double Price, int Stock, bool Save)
         {
-            this.id = phoneList.Count + 1;
+            this.id = phoneList.Count;
             this.brand = Brand;
             this.model = Model;
             this.size = Size;
@@ -39,8 +39,7 @@ namespace SharpPhone
                     IncludeFields = true
                 });
 
-                string formatted = $"{id} = {jsonString}\n";
-                File.AppendAllText("C:\\Users\\ryanl\\source\\repos\\SharpPhone\\phones.json", formatted);
+                File.AppendAllText("C:\\Users\\ryanl\\source\\repos\\SharpPhone\\phones.json", jsonString);
             }
         }
 
@@ -62,7 +61,7 @@ namespace SharpPhone
                         IncludeFields = true
                     });
 
-                    writer.WriteLine($"{phone.id} = {jsonString}");
+                    writer.WriteLine(jsonString);
                 }
             }
         }
@@ -83,39 +82,21 @@ namespace SharpPhone
                         IncludeFields = true
                     });
 
-                    writer.WriteLine($"{phone.id} = {jsonString}");
+                    writer.WriteLine(jsonString);
                 }
             }
         }
 
-        public static IReadOnlyList<SmartPhone> GetList()
-        {
-            return phoneList;
-        }
-
         public static void LoadFromFile(string path)
         {
-            if (!File.Exists(path))
-                return;
 
             string[] lines = File.ReadAllLines(path);
-            phoneList.Clear();
 
             foreach (string rawLine in lines)
             {
-                string line = rawLine.Trim();
-                if (string.IsNullOrWhiteSpace(line))
-                    continue;
-
-                int equalsIndex = line.IndexOf('=');
-                if (equalsIndex == -1)
-                    continue;
-
-                string jsonPart = line.Substring(equalsIndex + 1).Trim();
-
                 try
                 {
-                    SmartPhone? phone = JsonSerializer.Deserialize<SmartPhone>(jsonPart, new JsonSerializerOptions
+                    SmartPhone? phone = JsonSerializer.Deserialize<SmartPhone>(rawLine, new JsonSerializerOptions
                     {
                         IncludeFields = true
                     });
@@ -126,7 +107,7 @@ namespace SharpPhone
                 catch (Exception ex)
                 {
                     MessageBox.Show(
-                        $"Error reading phone entry:\n{line}\n\n{ex.Message}",
+                        $"Error:\n{ex.Message}",
                         "JSON Parse Error",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error
